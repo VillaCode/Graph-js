@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chart-js</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat">
+</head>
+<body>
+    
+    <div id="navbar"> 
+        <div id="tittle">Chart-js</div>
+        <div>
+            <a style="color:white;" href="http://github.com">Open Github Repo</a>
+        </div>
+    </div>
+
+    <div id="wrapper">
+        <div id="buttonsContainer">
+
+            <div id="logo"> 
+                   
+            </div>
+            
+            <div class="data">
+
+                <div>
+                    <label for="selecturl"> ORDS </label>
+                    <select name="selecturl" id="ordsurl">
+                        <option value="post">Post</option>
+                        <option value="get">Get</option>
+                        <option value="put">Put</option>
+                        <option value="delete">Delete</option>
+                    </select>
+                    <label for="">Data url</label>
+                    <button>---></button>
+                </div>
+                
+                <div>
+                    <textarea readonly name="" id="" cols="30" rows="10"> Read-Only Json Data
+                    </textarea>
+                </div>
+
+            </div>
+            
+            <div class="buttons">
+
+                <div>
+                    <label for="charttype"> Chart Type Control </label>
+                    <select name="charttype" id="charttype">
+                        <option value="bars">Bars</option>
+                        <option value="lineal">Lineal</option>
+                        <option value="cake">Cake</option>
+                    </select>
+                    <button>---></button>
+                </div>
+
+                <div>
+                    <button>Legend on/off</button>
+                </div>
+                
+                <div>
+                    <label for="labelColumn"> Label column Section </label>
+                    <select name="labelColumn" id="labelColumn">
+                        <option value="bars">equis</option>
+                        <option value="lineal">ye</option>
+                        <option value="cake">zeta</option>
+                    </select>
+                    <button>---></button>
+                </div>
+
+                <div>
+                    <label for="valueColumn"> Chart Type Control </label>
+                    <select name="valueColumn" id="valueColumn">
+                        <option value="bars">1</option>
+                        <option value="lineal">2</option>
+                        <option value="cake">3</option>
+                    </select>
+                    <button>---></button>
+                </div>
+
+            </div>
+            
+
+        </div>
+
+        <div id="graphContainer">
+
+        </div>
+    </div>
+
+    <div id="footer">
+        <div id="cr" style="color:white;">
+            Copyright/license
+        </div>
+    </div>
+
+</body>
+</html>
