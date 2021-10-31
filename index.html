@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat">
     <link rel="icon" href="img/ordslogo.svg">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.js"></script>
-
+    <script src="palette.js"></script>
 </head>
 <body>
     
@@ -32,7 +32,6 @@
                 <div>
                     <label for="selecturl"> ORDS </label>
                     <select name="selecturl" id="ordsurl">
-                        <option value="post">Post</option>
                         <option value="get">Get</option>
                         <option value="put">Put</option>
                         <option value="delete">Delete</option>
@@ -60,7 +59,7 @@
                 </div>
 
                 <div>
-                    <button id="legendBut">Legend on/off</button>
+                    <button id="legendBut" onclick="updateLegend()">Legend on/off</button>
                 </div>
                 
 
