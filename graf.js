@@ -1,24 +1,33 @@
 var ctx= document.getElementById("myChart").getContext("2d");
 
-var eName=[], eSalary = [], eAge = [];
+var apiCountries=[], apiPopulation = [], apiNetC = [], apiLand = [];
 var myChart;
 
 var myData = {  
-    labels: eName,
+    labels: apiCountries,
     datasets:[
         {
-            label:'Salary',
-            data:eSalary,
-            backgroundColor: generateColor(eSalary.length),
+            label:'Population',
+            data:"",
+            backgroundColor: "",
             borderWidth: 2,
             borderColor: '#777',
             hoverBorderWidth: 3,
             hoverBorderColor: '#000'
         },
         {
-            label:'Age',
-            data:eAge,
-            backgroundColor: generateColor(eAge.length),
+            label:'Net Change',
+            data:"",
+            backgroundColor: "",
+            borderWidth: 2,
+            borderColor: '#777',
+            hoverBorderWidth: 3,
+            hoverBorderColor: '#000'
+        },
+        {
+            label:'Land Area (km²)',
+            data:"",
+            backgroundColor: "",
             borderWidth: 2,
             borderColor: '#777',
             hoverBorderWidth: 3,
@@ -32,7 +41,7 @@ var myData = {
 var myOptions = {
     title:{
         display: true,
-        text: 'Largest cities',
+        text: 'Countries data',
         fontSize: 25
     },
 
@@ -109,21 +118,36 @@ function updateChartType(){
 
 
 async function getData(){
-    const url = "http://dummy.restapiexample.com/api/v1/employees";
+    const url = "https://gd6c1a14fa23298-dbgraph.adb.us-ashburn-1.oraclecloudapps.com/ords/admin/api/population";
     const response = await fetch(url);
     const barChartData = await response.json();
     
-    
-    const salary = barChartData.data.map( (x) => x.employee_salary );
-    const age = barChartData.data.map( (x) => x.employee_age );
-    const name = barChartData.data.map( (x) => x.employee_name );
+    if(barChartData){
+        console.log(barChartData)
+        
+        const apiCountries = barChartData.items.map( (x) => x["country (or dependency)"] );
+        const apiPopulation = barChartData.items.map( (x) => x["population (2020)"] );
+        const apiNetC = barChartData.items.map( (x) => x["net_change"] );
+        const apiLand = barChartData.items.map( (x) => x["land area (km²)"] );
 
-    //CASO DUMMY API
-    myData.labels = name;
-    myData.datasets[0].data = salary;
-    myData.datasets[1].data = age;
-    myData.datasets[0].backgroundColor = generateColor(salary.length);
-    myData.datasets[1].backgroundColor = generateColor(age.length);
+
+        //API
+        myData.labels = apiCountries;
+        myData.datasets[0].data = apiPopulation;
+        myData.datasets[1].data = apiNetC;
+        myData.datasets[2].data = apiLand;
+
+
+        //Colors
+        myData.datasets[0].backgroundColor = generateColor(apiPopulation.length);
+        myData.datasets[1].backgroundColor = generateColor(apiNetC.length);
+        myData.datasets[2].backgroundColor = generateColor(apiLand.length);
+
+        //json
+        document.getElementById("json").textContent = JSON.stringify(barChartData, null, 1)
+    }else{
+        alert("Error")
+    }
 
 };
 

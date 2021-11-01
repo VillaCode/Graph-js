@@ -70,7 +70,7 @@ html,body{
 }
 
 .data{
-    flex: 2;
+    flex: 3;
 }
 
 .buttons{
@@ -88,3 +88,16 @@ html,body{
     display: flex;
     margin-right: 3%;
 }
+
+
+#scrolldiv {
+    background-color: rgb(218, 231, 255);
+    width: 17vw;
+    height: 30vh;
+    overflow-y: auto;
+  }
+
+  #scrolldiv-content {
+    width: 100%;
+    font-size: x-small;
+  }
