@@ -101,3 +101,9 @@ html,body{
     width: 100%;
     font-size: x-small;
   }
+
+.string { color: green; }
+.number { color: rgb(255, 140, 0); }
+.boolean { color: blue; }
+.null { color: magenta; }
+.key { color: rgb(41, 0, 221); }
