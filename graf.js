@@ -1,11 +1,10 @@
 var ctx= document.getElementById("myChart").getContext("2d");
-
-var apiCountries=[], apiPopulation = [], apiNetC = [], apiLand = [];
+var currentLabel = 0, currentTittle = "Population";
+var labels=[], apiPopulation = [], apiNetC = [], apiLand = [];
 var myChart;
 
-var myData = {  
-    labels: apiCountries,
-    datasets:[
+var datasets = 
+    [
         {
             label:'Population',
             data:"",
@@ -33,15 +32,45 @@ var myData = {
             hoverBorderWidth: 3,
             hoverBorderColor: '#000'
         },
-    ]
-};
+        {
+            label:'Migrants',
+            data:"",
+            backgroundColor: "",
+            borderWidth: 2,
+            borderColor: '#777',
+            hoverBorderWidth: 3,
+            hoverBorderColor: '#000'
+        },
+    ];
+
 
 
 
 var myOptions = {
     title:{
         display: true,
-        text: 'Countries data',
+        text: 'Countries ' + currentTittle,
+        fontSize: 25
+    },
+
+    legend:{display: false},
+
+    scales:{
+        yAxes:[{
+            ticks:{
+                beginAtZero:true
+            }
+        }]
+    },
+    tooltips:{
+        enabled: true
+    }
+};
+
+var myOptionsCake = {
+    title:{
+        display: true,
+        text: 'Countries ' + currentTittle,
         fontSize: 25
     },
 
@@ -65,10 +94,14 @@ var myOptions = {
 
 async function loadChart(){      
     await getData();              
-        myChart= new Chart(ctx,{
-            type:"bar", // bar, horizontalBar, pie, line, radar, polarArea
-            data: myData,
-            options: myOptions
+
+    myChart= new Chart(ctx,{
+        type:"bar", // bar, horizontalBar, pie, line, radar, polarArea
+        data: {  
+            labels: labels,
+            datasets: [datasets[currentLabel]],
+        },
+        options: myOptions
     });
 };
 
@@ -88,27 +121,35 @@ function updateLegend(){
 
 
 function updateChartType(){
-    
 
     if (document.getElementById("chartType").value == "doughnut") {
         myChart.destroy();
         myChart = new Chart(ctx, {
             type: document.getElementById("chartType").value,
-            data: myData,
-            options: myOptions
+            data: {  
+                labels: labels,
+                datasets: [datasets[currentLabel]],
+            },
+            options: myOptionsCake
         });
     } else if (document.getElementById("chartType").value == "bar") {
         myChart.destroy();
         myChart = new Chart(ctx, {
             type: document.getElementById("chartType").value,
-            data: myData,
+            data: {  
+                labels: labels,
+                datasets: [datasets[currentLabel]],
+            },
             options: myOptions
         });
     } else{
         myChart.destroy();
         myChart = new Chart(ctx, {
             type: document.getElementById("chartType").value,
-            data: myData,
+            data: {  
+                labels: labels,
+                datasets: [datasets[currentLabel]],
+            },
             options: myOptions
         });
     }
@@ -117,31 +158,49 @@ function updateChartType(){
 };
 
 
+function updateLabel(){
+   
+    var selected = document.getElementById("valueColumn");
+    var selectedValue = valueColumn.options[valueColumn.selectedIndex].value;
+    
+    currentLabel = parseInt(selectedValue);
+    currentTittle = selected.options[selected.selectedIndex].text;
+    
+    myOptions.title.text = "Countries " + currentTittle;
+    myOptionsCake.title.text = "Countries " + currentTittle;
+
+    updateChartType();
+}
+
+
+
 async function getData(){
     const url = "https://gd6c1a14fa23298-dbgraph.adb.us-ashburn-1.oraclecloudapps.com/ords/admin/api/population";
     const response = await fetch(url);
     const barChartData = await response.json();
     
     if(barChartData){
-        console.log(barChartData)
         
         const apiCountries = barChartData.items.map( (x) => x["country (or dependency)"] );
         const apiPopulation = barChartData.items.map( (x) => x["population (2020)"] );
         const apiNetC = barChartData.items.map( (x) => x["net_change"] );
         const apiLand = barChartData.items.map( (x) => x["land area (km²)"] );
+        const apiMigrants = barChartData.items.map( (x) => x["migrants (net)"] );
 
 
         //API
-        myData.labels = apiCountries;
-        myData.datasets[0].data = apiPopulation;
-        myData.datasets[1].data = apiNetC;
-        myData.datasets[2].data = apiLand;
+        labels = apiCountries;
+        datasets[0].data = apiPopulation;
+        datasets[1].data = apiNetC;
+        datasets[2].data = apiLand;
+        datasets[3].data = apiMigrants;
 
 
         //Colors
-        myData.datasets[0].backgroundColor = generateColor(apiPopulation.length);
-        myData.datasets[1].backgroundColor = generateColor(apiNetC.length);
-        myData.datasets[2].backgroundColor = generateColor(apiLand.length);
+        datasets[0].backgroundColor = generateColor(apiPopulation.length);
+        datasets[1].backgroundColor = generateColor(apiNetC.length);
+        datasets[2].backgroundColor = generateColor(apiLand.length);
+        datasets[3].backgroundColor = generateColor(apiMigrants.length);
 
         //json
         document.getElementById("json").innerHTML = syntaxHighlight(JSON.stringify(barChartData, null, 1))
@@ -160,12 +219,11 @@ function random_rgba() {
 
 function generateColor(len){
     let colors = []
-    console.log(len);
+
     for (let index = 0; index < len; index++){
        colors[index] = random_rgba();
     }
 
-    console.log(colors);
     return colors;
 };
 
@@ -190,4 +248,3 @@ function syntaxHighlight(json) {
 }
 
 
-loadChart();

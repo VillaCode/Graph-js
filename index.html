@@ -30,14 +30,11 @@
 
                 <div>
                     <label for="selecturl"> ORDS </label>
-                    <select name="selecturl" id="ordsurl">
-                        <option value="get">Get</option>
-                        <option value="put">Put</option>
-                        <option value="delete">Delete</option>
-                    </select>
-                    <label for="">Data url</label>
-                    <button>---></button>
+                    <label for="">GET Data url</label>
+                    <button id="graphGen" onclick="loadChart()">---></button>
                 </div>
+
+                <div id="url"><span style="font-size: 13px; font-weight: bolder;">From: </span> https://gd6c1a14fa23298-dbgraph.adb.us-ashburn-1.oraclecloudapps.com/ords/admin/api/population </div>
                 
                 <div id='scrolldiv'>
                     <div id='scrolldiv-content'><pre id="json"></pre></div>
@@ -63,10 +60,11 @@
 
                 <div>
                     <label for="valueColumn"> Value column section </label>
-                    <select name="valueColumn" id="valueColumn">
-                        <option value="bars">1</option>
-                        <option value="lineal">2</option>
-                        <option value="cake">3</option>
+                    <select name="valueColumn" id="valueColumn" onchange="updateLabel()">
+                        <option value="0">Population</option>
+                        <option value="1">Net Change</option>
+                        <option value="2">Land Area (km²)</option>
+                        <option value="3">Migrants</option>
                     </select>
                 </div>
 
